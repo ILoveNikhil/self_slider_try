@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testimonial Section</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+      body {
+        overflow-x: hidden;
+        font-family: "Poppins", sans-serif;
+        /* background: black; */
+      }
+      .testimonial {
+        text-align: center;
+        position: relative;
+      }
+      .testimonial-slider {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+      }
+      .testimonial-slider .slide {
+        width: 100%;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease-in-out;
+      }
+      .testimonial-slider .slide.active {
+        transform: scale(1.1);
+        z-index: 2;
+      }
+      .owl-dots {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .owl-dots .owl-dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background: #999;
+        border-radius: 50%;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+      }
+      .owl-dots .owl-dot.active {
+        background: #f00; /* Change the color for the active dot */
+      }
+    </style>
+  </head>
+  <body>
+    <section class="testimonial">
+      <div class="testimonial-slider">
+        <div class="slide active">
+          <p>Testimonial 1</p>
+        </div>
+        <div class="slide">
+          <p>Testimonial 2</p>
+        </div>
+        <div class="slide">
+          <p>Testimonial 3</p>
+        </div>
+        <div class="slide">
+          <p>Testimonial 4</p>
+        </div>
+        <div class="slide">
+          <p>Testimonial 5</p>
+        </div>
+        <div class="slide">
+          <p>Testimonial 6</p>
+        </div>
+      </div>
+      <div class="owl-dots"></div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $(".testimonial-slider").owlCarousel({
+          items: 1,
+          loop: true,
+          autoplay: true,
+          autoplayTimeout: 10000, // 10 seconds
+          autoplayHoverPause: true,
+          dots: true,
+        });
+      });
+    </script>
+  </body>
+</html>

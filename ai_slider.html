@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <title>Testimonial Slider</title>
+    <style>
+      /* styles.css */
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f0f0f0;
+      }
+
+      .slider-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px; /* Adjust as needed for your design */
+      }
+
+      .slider {
+        display: flex;
+        overflow: hidden;
+        border: 1px solid black;
+      }
+
+      .slide {
+        width: 100%;
+        min-width: 100px;
+        height: 300px; /* Adjust the height as needed */
+        background: linear-gradient(black, green);
+        border: 1px solid black; /* 1px solid black border for each slide */
+        transition: transform 0.5s, width 0.5s, height 0.5s;
+        transform: scale(1); /* Reset scale for inactive slides */
+      }
+
+      .slide.active {
+        transform: scale(1.1); /* Slightly larger size for active slide */
+        background: linear-gradient(
+          green,
+          black
+        ); /* Opposite gradient for active slide */
+        min-width: 120px; /* Slightly smaller width for active slide */
+        height: 320px; /* Slightly smaller height for active slide */
+      }
+
+      .slider-dots {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        margin-top: 10px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px; /* Circular shape for inactive dots */
+        background: black; /* Background color for inactive dots */
+        border-radius: 50%; /* Make it circular */
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .dot.active {
+        width: 20px; /* Rectangle shape for the active dot */
+        background: red; /* Active dot color */
+        border-radius: 10px; /* Slight border-radius for the rectangle */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slider-container">
+      <div class="slider">
+        <div class="slide active"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+      </div>
+      <div class="slider-dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+    <script>
+      // script.js
+
+      const slider = document.querySelector(".slider");
+      const slides = document.querySelectorAll(".slide");
+      const dots = document.querySelectorAll(".dot");
+
+      let currentIndex = 0;
+
+      function updateSlider() {
+        const translateX = -currentIndex * 100 + "%";
+        slider.style.transform = `translateX(${translateX})`;
+
+        dots.forEach((dot, index) => {
+          dot.classList.toggle("active", index === currentIndex);
+          slides[index].classList.toggle("active", index === currentIndex);
+        });
+      }
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          currentIndex = index;
+          updateSlider();
+        });
+      });
+
+      function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateSlider();
+      }
+
+      setInterval(nextSlide, 5000); // Auto-advance every 5 seconds
+      updateSlider(); // Initial update
+    </script>
+  </body>
+</html>

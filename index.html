@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>simple slider try 1</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        /* display: flex;
+        justify-content: center;
+        align-items: center; */
+        height: 100vh;
+        /* background: black; */
+      }
+
+      .slider-container {
+        position: relative;
+        /* width: 150%; */
+        min-width: 62%;
+        min-height: 70vh;
+        max-width: 800px;
+        overflow: hidden;
+        top: 5%;
+        margin: auto;
+        /* background-color: rgb(0, 234, 255); */
+        border: 5px solid red;
+      }
+
+      .slider {
+        display: flex;
+        transition: transform 0.5s;
+        border: 1px solid rgb(163, 179, 19);
+        margin: 1rem;
+      }
+
+      .slide {
+        /* flex: 0 0 100px; */
+        min-width: 250px;
+        height: 300px;
+        background: linear-gradient(
+          rgb(20, 20, 20),
+          rgb(80, 78, 78),
+          rgb(11, 37, 28)
+        );
+        border: 1px solid rgb(19, 179, 89);
+        transition: transform 0.5s, width 0.5s, height 0.5s;
+        margin: 1rem;
+      }
+
+      .slide.active {
+        transform: scale(1.1);
+        background: linear-gradient(
+          rgb(11, 37, 28),
+          rgb(80, 78, 78),
+          rgb(20, 20, 20)
+        );
+        flex: 0 0 120px;
+        /* min-width: 270px; */
+        height: 320px;
+      }
+
+      .slider-dots {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        margin-top: 10px;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        background: white;
+        border-radius: 50%;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+        border: 0.5px solid black;
+      }
+
+      .dot.active {
+        width: 20px;
+        /*     height: 10px; */
+        background: rgb(0, 255, 132);
+        border-radius: 10px;
+      }
+      .slider-icons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        transform: translateY(-50%);
+        /* margin: 1rem; */
+        z-index: 10;
+      }
+
+      .icon {
+        font-size: 24px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .left-icon {
+        margin-left: -5px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .right-icon {
+        margin-right: -5px;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="slider-container">
+      <article class="slider">
+        <figure class="slide"></figure>
+        <figure class="slide active"></figure>
+        <figure class="slide"></figure>
+        <figure class="slide"></figure>
+        <figure class="slide"></figure>
+        <figure class="slide"></figure>
+        <figure class="slide"></figure>
+        <figure class="slide"></figure>
+        <figure class="slide"></figure>
+      </article>
+      <div class="slider-icons">
+        <span class="icon left-icon" onclick="moveSlider('left')">◀</span>
+        <span class="icon right-icon" onclick="moveSlider('right')">▶</span>
+      </div>
+      <nav class="slider-dots">
+        <span class="dot" onclick="setActiveSlide(0)"></span>
+        <span class="dot active" onclick="setActiveSlide(1)"></span>
+        <span class="dot" onclick="setActiveSlide(2)"></span>
+        <span class="dot" onclick="setActiveSlide(3)"></span>
+        <span class="dot" onclick="setActiveSlide(4)"></span>
+        <span class="dot" onclick="setActiveSlide(5)"></span>
+        <span class="dot" onclick="setActiveSlide(6)"></span>
+        <span class="dot" onclick="setActiveSlide(7)"></span>
+        <span class="dot" onclick="setActiveSlide(8)"></span>
+      </nav>
+    </section>
+
+    <script>
+      const slider = document.querySelector(".slider");
+      const slides = document.querySelectorAll(".slide");
+      const dots = document.querySelectorAll(".dot");
+
+      let currentIndex = 1; // Start with the 2nd figure active
+      let autoSlideInterval;
+      let isMouseDown = false;
+      let initialMouseX = 0;
+      let initialSliderX = 0;
+
+      function updateSlider() {
+        const translateX = -currentIndex * 30 + "%";
+        slider.style.transform = `translateX(${translateX})`;
+
+        dots.forEach((dot, index) => {
+          dot.classList.toggle("active", index === currentIndex);
+        });
+
+        slides.forEach((slide, index) => {
+          slide.classList.toggle("active", index === currentIndex);
+        });
+      }
+
+      function setActiveSlide(index) {
+        currentIndex = index;
+        updateSlider();
+      }
+
+      function moveSlider(direction) {
+        if (direction === "left") {
+          currentIndex = Math.max(currentIndex - 1, 0);
+        } else if (direction === "right") {
+          currentIndex = Math.min(currentIndex + 1, slides.length - 1);
+        }
+
+        updateSlider();
+      }
+
+      function startAutoSlide() {
+        autoSlideInterval = setInterval(() => {
+          currentIndex = (currentIndex + 1) % slides.length;
+          updateSlider();
+        }, 3000); // Change slide every 10 seconds
+      }
+
+      startAutoSlide(); // Start the auto slide
+
+      slider.addEventListener("mouseenter", () => {
+        clearInterval(autoSlideInterval); // Stop auto slide on hover
+        if (!isMouseDown) {
+          slider.style.cursor = "grab";
+        }
+      });
+
+      slider.addEventListener("mouseleave", () => {
+        if (!isMouseDown) {
+          slider.style.cursor = "default";
+          startAutoSlide(); // Resume auto slide on mouse leave
+        }
+      });
+
+      //   slider.addEventListener("mousedown", (e) => {
+      //     isMouseDown = true;
+      //     initialMouseX = e.clientX;
+      //     initialSliderX = currentIndex * -30;
+
+      //     slider.style.cursor = "grabbing";
+      //   });
+
+      //   slider.addEventListener("mousemove", (e) => {
+      //     if (isMouseDown) {
+      //       const deltaX = e.clientX - initialMouseX;
+      //       slider.style.transform = `translateX(${initialSliderX + deltaX}px)`;
+      //     }
+      //   });
+
+      //   slider.addEventListener("mouseup", () => {
+      //     isMouseDown = false;
+      //     slider.style.cursor = "grab";
+
+      //     // Determine the new active slide based on the slider's position
+      //     currentIndex = Math.round(
+      //       Math.abs(parseFloat(slider.style.transform)) / 30
+      //     );
+      //     updateSlider();
+      //   });
+    </script>
+
+    <!-- <script>
+      const slider = document.querySelector(".slider");
+      const slides = document.querySelectorAll(".slide");
+      const dots = document.querySelectorAll(".dot");
+
+      let currentIndex = 1; // Start with the 2nd figure active
+      let autoSlideInterval;
+
+      function updateSlider() {
+        const translateX = -currentIndex * 30 + "%";
+        slider.style.transform = `translateX(${translateX})`;
+
+        dots.forEach((dot, index) => {
+          dot.classList.toggle("active", index === currentIndex);
+        });
+
+        slides.forEach((slide, index) => {
+          slide.classList.toggle("active", index === currentIndex);
+        });
+      }
+
+      function setActiveSlide(index) {
+        currentIndex = index;
+        updateSlider();
+      }
+
+      function moveSlider(direction) {
+        if (direction === "left") {
+          currentIndex = Math.max(currentIndex - 1, 0);
+        } else if (direction === "right") {
+          currentIndex = Math.min(currentIndex + 1, slides.length - 1);
+        }
+
+        updateSlider();
+      }
+
+      function startAutoSlide() {
+        autoSlideInterval = setInterval(() => {
+          currentIndex = (currentIndex + 1) % slides.length;
+          updateSlider();
+        }, 3000); // Change slide every 10 seconds
+      }
+
+      startAutoSlide(); // Start the auto slide
+
+      slider.addEventListener("mouseenter", () => {
+        clearInterval(autoSlideInterval); // Stop auto slide on hover
+      });
+
+      slider.addEventListener("mouseleave", () => {
+        startAutoSlide(); // Resume auto slide on mouse leave
+      });
+    </script> -->
+  </body>
+</html>
